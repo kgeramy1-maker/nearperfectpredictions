@@ -1,32 +1,21 @@
-# NearPerfectPredictions Starter
+# NearPerfectPredictions Redesign
 
-This is a starter React website for NearPerfectPredictions.com.
+This is the redesigned version of your live website.
 
-## What is included
+## Included
+- Professional homepage redesign
 - Public / private site toggle
-- Four sport page sections: NBA, NFL, NHL, MLB
-- Regular season and playoff section text for each sport
-- Sample NBA and NFL game page blocks
-- Contact email already added
+- Four sport tabs: NBA, NFL, NHL, MLB
+- Evenly separated featured game cards
+- Full team lists for each sport
+- Contact email updated to kgeramy1@gmail.com
 
-## How to run it on your computer
-
-1. Install Node.js
-2. Open this folder in VS Code
-3. Open the terminal
-4. Run:
-
+## Run locally
 ```bash
 npm install
 npm run dev
 ```
 
-Then open the local address shown in the terminal.
-
-## How to put it online with Vercel
-1. Create a GitHub account
-2. Create a new repository
-3. Upload these files
-4. Create a Vercel account
-5. Import the GitHub repository into Vercel
-6. Click Deploy
+## Update your live site
+Replace the files in your current project with these files, then push to GitHub.
+Vercel will redeploy automatically.

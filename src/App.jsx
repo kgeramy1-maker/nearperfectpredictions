@@ -1,328 +1,317 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const sportsPages = {
+const sportsData = {
   NBA: {
     status: "Active",
-    regular: "Regular season analysis, team form tracking, matchup breakdowns, and evolving prediction tools.",
-    playoffs: "Playoff game analysis focused on pressure matchups, momentum, and series-based insight.",
+    description:
+      "NBA coverage focused on regular season trends, playoff pressure, matchup structure, and prediction research.",
+    regularIntro:
+      "Regular season games, team rhythm, pace, injuries, and matchup flow can be tracked here.",
+    playoffIntro:
+      "Playoff games, series pressure, momentum swings, and deeper high-stakes breakdowns belong here.",
+    sampleGames: [
+      { teams: "Boston Celtics vs Milwaukee Bucks", type: "Regular Season", note: "Team form, pace, injuries, and matchup edge." },
+      { teams: "Los Angeles Lakers vs Denver Nuggets", type: "Playoffs", note: "Series pressure, star impact, and playoff adjustments." },
+      { teams: "Phoenix Suns vs Dallas Mavericks", type: "Regular Season", note: "Scoring rhythm, defensive consistency, and rest." },
+      { teams: "Miami Heat vs New York Knicks", type: "Playoffs", note: "Half-court matchup, depth, and late-game execution." },
+    ],
     teams: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers",
       "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers",
       "LA Clippers", "Los Angeles Lakers", "Memphis Grizzlies", "Miami Heat", "Milwaukee Bucks", "Minnesota Timberwolves",
       "New Orleans Pelicans", "New York Knicks", "Oklahoma City Thunder", "Orlando Magic", "Philadelphia 76ers", "Phoenix Suns",
-      "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards"
+      "Portland Trail Blazers", "Sacramento Kings", "San Antonio Spurs", "Toronto Raptors", "Utah Jazz", "Washington Wizards",
     ],
   },
   NFL: {
     status: "Active",
-    regular: "Regular season game pages for weekly breakdowns, trends, team form, and matchup research.",
-    playoffs: "Playoff and postseason pages built for higher-pressure games, elimination matchups, and deeper analysis.",
+    description:
+      "NFL coverage built around weekly matchups, roster strength, game flow, coaching tendencies, and playoff intensity.",
+    regularIntro:
+      "Regular season football pages can track weekly games, trends, injuries, and team identity through the season.",
+    playoffIntro:
+      "Playoff football pages can focus on elimination pressure, quarterback impact, and postseason game breakdowns.",
+    sampleGames: [
+      { teams: "Kansas City Chiefs vs Buffalo Bills", type: "Playoffs", note: "Quarterback edge, pressure moments, and coaching decisions." },
+      { teams: "Philadelphia Eagles vs Dallas Cowboys", type: "Regular Season", note: "Trench battle, pace control, and matchup leverage." },
+      { teams: "Baltimore Ravens vs Cincinnati Bengals", type: "Regular Season", note: "Explosive play potential, defense, and discipline." },
+      { teams: "San Francisco 49ers vs Detroit Lions", type: "Playoffs", note: "Scheme strength, balance, and late-game adjustment." },
+    ],
     teams: [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears",
       "Cincinnati Bengals", "Cleveland Browns", "Dallas Cowboys", "Denver Broncos", "Detroit Lions", "Green Bay Packers",
       "Houston Texans", "Indianapolis Colts", "Jacksonville Jaguars", "Kansas City Chiefs", "Las Vegas Raiders", "Los Angeles Chargers",
       "Los Angeles Rams", "Miami Dolphins", "Minnesota Vikings", "New England Patriots", "New Orleans Saints", "New York Giants",
       "New York Jets", "Philadelphia Eagles", "Pittsburgh Steelers", "San Francisco 49ers", "Seattle Seahawks", "Tampa Bay Buccaneers",
-      "Tennessee Titans", "Washington Commanders"
+      "Tennessee Titans", "Washington Commanders",
     ],
   },
   NHL: {
     status: "Coming Soon",
-    regular: "Future regular season hockey research, matchup notes, and tracking tools.",
-    playoffs: "Future playoff hockey analysis and postseason performance insights.",
+    description:
+      "NHL coverage ready for future matchup tracking, goalie impact, form analysis, and playoff series structure.",
+    regularIntro:
+      "Regular season hockey pages can track team form, goalie strength, travel spots, and matchup trends.",
+    playoffIntro:
+      "Playoff hockey pages can focus on series tempo, depth, goalie swings, and postseason pressure.",
+    sampleGames: [
+      { teams: "Boston Bruins vs Toronto Maple Leafs", type: "Regular Season", note: "Goaltending, line depth, and special teams." },
+      { teams: "Colorado Avalanche vs Dallas Stars", type: "Playoffs", note: "Series pace, depth scoring, and defensive structure." },
+      { teams: "Edmonton Oilers vs Vancouver Canucks", type: "Regular Season", note: "Top-end talent, form, and shot quality." },
+      { teams: "New York Rangers vs Carolina Hurricanes", type: "Playoffs", note: "Goaltending edge, forecheck, and discipline." },
+    ],
     teams: [
       "Anaheim Ducks", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks",
       "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers",
       "Los Angeles Kings", "Minnesota Wild", "Montréal Canadiens", "Nashville Predators", "New Jersey Devils", "New York Islanders",
       "New York Rangers", "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks", "Seattle Kraken",
       "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs", "Utah Hockey Club", "Vancouver Canucks", "Vegas Golden Knights",
-      "Washington Capitals", "Winnipeg Jets"
+      "Washington Capitals", "Winnipeg Jets",
     ],
   },
   MLB: {
     status: "Coming Soon",
-    regular: "Future regular season baseball pages for daily games, team form, and data-based insight.",
-    playoffs: "Future postseason baseball analysis for playoff series and high-pressure matchups.",
+    description:
+      "MLB coverage ready for future pitcher-driven analysis, lineup structure, bullpen trends, and playoff series pages.",
+    regularIntro:
+      "Regular season baseball pages can track daily matchups, pitchers, lineup form, and recent trends.",
+    playoffIntro:
+      "Playoff baseball pages can focus on series management, bullpen leverage, and postseason pressure points.",
+    sampleGames: [
+      { teams: "New York Yankees vs Boston Red Sox", type: "Regular Season", note: "Starting pitcher edge, lineup form, and bullpen depth." },
+      { teams: "Los Angeles Dodgers vs Atlanta Braves", type: "Playoffs", note: "Series leverage, bullpen usage, and power bats." },
+      { teams: "Houston Astros vs Seattle Mariners", type: "Regular Season", note: "Pitching matchup, recent form, and run creation." },
+      { teams: "Philadelphia Phillies vs San Diego Padres", type: "Playoffs", note: "Bullpen pressure, late innings, and lineup balance." },
+    ],
     teams: [
       "Arizona Diamondbacks", "Athletics", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs",
       "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies", "Detroit Tigers", "Houston Astros",
       "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers", "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins",
       "New York Mets", "New York Yankees", "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants",
-      "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
+      "Seattle Mariners", "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals",
     ],
   },
 };
 
-function InfoCard({ title, text }) {
+function StatCard({ label, value, subtext }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-      <h4 className="text-lg font-semibold">{title}</h4>
-      <p className="mt-2 text-slate-300">{text}</p>
+    <div className="stat-card">
+      <p className="label">{label}</p>
+      <p className="value">{value}</p>
+      <p className="subtext">{subtext}</p>
     </div>
   );
 }
 
-export default function StarterWebsite() {
+function GameCard({ game }) {
+  return (
+    <div className="game-card">
+      <div className="game-top">
+        <p className="game-title">{game.teams}</p>
+        <span className="badge">{game.type}</span>
+      </div>
+      <p className="game-note">{game.note}</p>
+    </div>
+  );
+}
+
+function TeamChip({ team }) {
+  return <span className="team-chip">{team}</span>;
+}
+
+export default function App() {
   const [siteMode, setSiteMode] = useState("private");
   const [selectedSport, setSelectedSport] = useState("NBA");
   const accessGranted = siteMode === "public";
-  const currentSport = sportsPages[selectedSport];
+  const allSports = useMemo(() => Object.keys(sportsData), []);
+  const currentSport = sportsData[selectedSport];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-white/10 bg-slate-900/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-xl font-semibold tracking-wide">NearPerfectPredictions.com</h1>
-            <p className="text-sm text-slate-400">Smarter sports insight built to grow over time</p>
-          </div>
+    <div className="page-shell">
+      <div className="background-glow" />
 
-          <div className="flex flex-col gap-3 md:items-end">
-            <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 text-sm">
-              <button
-                onClick={() => setSiteMode("private")}
-                className={`rounded-xl px-4 py-2 transition ${
-                  siteMode === "private" ? "bg-white text-slate-900" : "text-slate-300 hover:bg-white/10"
-                }`}
-              >
-                Private
-              </button>
-              <button
-                onClick={() => setSiteMode("public")}
-                className={`rounded-xl px-4 py-2 transition ${
-                  siteMode === "public" ? "bg-cyan-300 text-slate-950" : "text-slate-300 hover:bg-white/10"
-                }`}
-              >
-                Public
-              </button>
-            </div>
-            <p className="text-xs text-slate-400">
-              Current mode: <span className="font-medium text-white">{siteMode}</span>
-            </p>
+      <header className="topbar">
+        <div>
+          <p className="eyebrow">Near Perfect Predictions</p>
+          <h1 className="brand-title">NearPerfectPredictions.com</h1>
+          <p className="brand-subtitle">
+            Professional sports insight built to expand across leagues, games, and prediction research.
+          </p>
+        </div>
+
+        <div className="topbar-right">
+          <div className="toggle-wrap">
+            <button
+              onClick={() => setSiteMode("private")}
+              className={siteMode === "private" ? "toggle-btn active-light" : "toggle-btn"}
+            >
+              Private
+            </button>
+            <button
+              onClick={() => setSiteMode("public")}
+              className={siteMode === "public" ? "toggle-btn active-cyan" : "toggle-btn"}
+            >
+              Public
+            </button>
           </div>
+          <p className="mode-label">
+            Site mode: <span>{siteMode}</span>
+          </p>
         </div>
       </header>
 
       {!accessGranted ? (
-        <main className="mx-auto flex min-h-[80vh] max-w-3xl items-center px-6 py-20">
-          <div className="w-full rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl">
-            <p className="mb-3 inline-block rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-xs font-medium text-amber-300">
-              Private website
+        <main className="private-main">
+          <div className="private-card">
+            <div className="warning-pill">Private website</div>
+            <h2>Near Perfect Predictions is currently private.</h2>
+            <p>
+              This website is hidden right now. When you want people to view the full platform,
+              switch the mode to public in the top right.
             </p>
-            <h2 className="text-3xl font-bold md:text-4xl">Near Perfect Predictions is currently private.</h2>
-            <p className="mt-4 max-w-2xl text-slate-300">
-              This website is hidden right now. When you want people to view it, switch the mode to public in the top right.
-            </p>
-
-            <div className="mt-8 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 p-4 text-sm text-cyan-100">
-              Private mode hides the full website and shows only this message until you switch it back to public.
+            <div className="notice-box">
+              Private mode keeps the website closed and shows only this message until you turn it public again.
             </div>
           </div>
         </main>
       ) : (
         <>
           <main>
-            <section id="home" className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-2 md:items-center">
+            <section className="hero">
               <div>
-                <p className="mb-3 inline-block rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-medium text-cyan-300">
-                  Prediction platform
+                <div className="cyan-pill">Live-ready sports platform</div>
+                <h2>Smarter sports predictions with clean structure, pro design, and room to grow.</h2>
+                <p className="hero-text">
+                  Near Perfect Predictions is designed to organize NBA, NFL, NHL, and MLB coverage
+                  into a serious-looking platform with separate game areas, team sections, and
+                  future space for live matchups and learning tools.
                 </p>
-                <h2 className="text-4xl font-bold leading-tight md:text-5xl">
-                  Smarter sports predictions built through data, patterns, and growth.
-                </h2>
-                <p className="mt-5 max-w-xl text-base text-slate-300 md:text-lg">
-                  Near Perfect Predictions is being built as a growing platform for sports insight, analysis, and evolving prediction tools.
-                  Each sport now has its own dedicated page section.
-                </p>
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <a
-                    href="#sports"
-                    className="rounded-2xl bg-white px-5 py-3 text-sm font-medium text-slate-900 transition hover:scale-[1.02]"
-                  >
-                    View sports pages
-                  </a>
-                  <a
-                    href="#contact"
-                    className="rounded-2xl border border-white/15 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/5"
-                  >
-                    Contact
-                  </a>
+                <div className="button-row">
+                  <a href="#sports" className="btn-primary">Explore sport pages</a>
+                  <a href="#contact" className="btn-secondary">Contact</a>
                 </div>
               </div>
 
-              <div className="grid gap-4">
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
-                  <p className="text-sm text-cyan-300">Platform vision</p>
-                  <h3 className="mt-2 text-2xl font-semibold">One page for each sport</h3>
-                  <p className="mt-3 text-slate-300">
-                    NBA, NFL, NHL, and MLB each now have their own clean page section so the platform can stay organized and grow naturally.
+              <div className="hero-stats">
+                <StatCard label="Sports" value="4" subtext="NBA, NFL, NHL, and MLB with room to expand later." />
+                <div className="two-col">
+                  <StatCard label="Structure" value="Separate" subtext="Each sport gets its own clean page area." />
+                  <StatCard label="Game Layout" value="Evenly spaced" subtext="Game cards are balanced and separated for readability." />
+                </div>
+              </div>
+            </section>
+
+            <section className="feature-strip">
+              <StatCard label="Contact" value="kgeramy1@gmail.com" subtext="Direct email contact for the platform." />
+              <StatCard label="Mode Control" value="Public / Private" subtext="You can switch the site on or off visually from the top bar." />
+              <StatCard label="Future Goal" value="Live games + learning" subtext="Designed to grow into automatic matchup tracking and deeper team analysis." />
+            </section>
+
+            <section className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">About the platform</p>
+                <h3>Built to look serious now and scale later.</h3>
+                <p>
+                  Near Perfect Predictions is focused on sports data, matchup reasoning, game structure,
+                  and future prediction tools. The site is being built so it looks professional today
+                  while still leaving room for live feeds, team learning, and automated game tracking later.
+                </p>
+              </div>
+            </section>
+
+            <section id="sports" className="section container">
+              <div className="section-top">
+                <div className="section-copy">
+                  <p className="eyebrow">Sport pages</p>
+                  <h3>One professional page structure for each sport.</h3>
+                  <p>
+                    Each sport has its own page area with regular season coverage, playoff coverage,
+                    evenly separated game cards, and full team lists.
                   </p>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="rounded-3xl border border-white/10 bg-slate-900 p-5">
-                    <p className="text-sm text-slate-400">Current focus</p>
-                    <p className="mt-2 font-medium">Prediction research</p>
-                  </div>
-                  <div className="rounded-3xl border border-white/10 bg-slate-900 p-5">
-                    <p className="text-sm text-slate-400">Structure</p>
-                    <p className="mt-2 font-medium">4 sport pages</p>
-                  </div>
+                <div className="sports-tab-wrap">
+                  {allSports.map((sport) => (
+                    <button
+                      key={sport}
+                      onClick={() => setSelectedSport(sport)}
+                      className={selectedSport === sport ? "sport-tab active-sport" : "sport-tab"}
+                    >
+                      {sport}
+                    </button>
+                  ))}
                 </div>
               </div>
-            </section>
 
-            <section id="about" className="border-y border-white/10 bg-slate-900/60">
-              <div className="mx-auto max-w-6xl px-6 py-16">
-                <h3 className="text-3xl font-semibold">About Near Perfect Predictions</h3>
-                <p className="mt-4 max-w-3xl text-slate-300">
-                  Near Perfect Predictions is focused on studying sports data, trends, and performance patterns to better understand outcomes.
-                  The goal is to build a platform that keeps improving over time, while staying simple enough to grow step by step.
-                </p>
-              </div>
-            </section>
-
-            <section id="sports" className="mx-auto max-w-6xl px-6 py-16">
-              <div className="mb-8">
-                <h3 className="text-3xl font-semibold">Sport pages</h3>
-                <p className="mt-3 max-w-3xl text-slate-300">
-                  Each sport now has its own dedicated page section. Inside each one, you can build out regular season games and playoff games separately as the site grows.
-                </p>
-              </div>
-
-              <div className="mb-8 flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-2 text-sm w-fit">
-                {Object.keys(sportsPages).map((sport) => (
-                  <button
-                    key={sport}
-                    onClick={() => setSelectedSport(sport)}
-                    className={`rounded-xl px-4 py-2 transition ${
-                      selectedSport === sport ? "bg-white text-slate-900" : "text-slate-300 hover:bg-white/10"
-                    }`}
-                  >
-                    {sport}
-                  </button>
-                ))}
-              </div>
-
-              <div className="rounded-3xl border border-white/10 bg-slate-900/40 p-6">
-                <div className="mb-5 flex items-center justify-between gap-4 flex-wrap">
+              <div className="sport-panel">
+                <div className="sport-header">
                   <div>
-                    <h4 className="text-2xl font-semibold">{selectedSport} Page</h4>
-                    <p className="mt-1 text-slate-400">Dedicated page structure for {selectedSport}</p>
+                    <span className="badge">{currentSport.status}</span>
+                    <h4>{selectedSport}</h4>
+                    <p className="sport-description">{currentSport.description}</p>
                   </div>
-                  <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-300">
-                    {currentSport.status}
-                  </span>
+                  <div className="sport-summary">
+                    <StatCard label="Regular Season" value="Ready" subtext={currentSport.regularIntro} />
+                    <StatCard label="Playoffs" value="Ready" subtext={currentSport.playoffIntro} />
+                  </div>
                 </div>
 
-                <div className="grid gap-5 md:grid-cols-2">
-                  <InfoCard title={`${selectedSport} Regular Season Games`} text={currentSport.regular} />
-                  <InfoCard title={`${selectedSport} Playoff Games`} text={currentSport.playoffs} />
+                <div className="games-section">
+                  <div className="section-copy small">
+                    <h5>Featured game layout</h5>
+                    <p>Sample games are spaced evenly to keep the page organized and readable.</p>
+                  </div>
+                  <div className="games-grid">
+                    {currentSport.sampleGames.map((game) => (
+                      <GameCard key={`${selectedSport}-${game.teams}-${game.type}`} game={game} />
+                    ))}
+                  </div>
                 </div>
 
-                <div className="mt-6">
-                  <h4 className="text-xl font-semibold">All {selectedSport} Teams</h4>
-                  <p className="mt-2 text-slate-300">
-                    Every team for {selectedSport} is listed here so the site can grow into live matchups, team pages, and future prediction tools.
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-3">
+                <div className="teams-section">
+                  <div className="section-copy small">
+                    <h5>All {selectedSport} teams</h5>
+                    <p>Full team list included so the site can grow into team pages, matchup pages, and future live tracking.</p>
+                  </div>
+                  <div className="team-grid">
                     {currentSport.teams.map((team) => (
-                      <span
-                        key={`${selectedSport}-${team}`}
-                        className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200"
-                      >
-                        {team}
-                      </span>
+                      <TeamChip key={`${selectedSport}-${team}`} team={team} />
                     ))}
                   </div>
                 </div>
               </div>
             </section>
 
-            <section id="sample-games" className="mx-auto max-w-6xl px-6 pb-16">
-              <div className="mb-8">
-                <h3 className="text-3xl font-semibold">Sample game pages</h3>
-                <p className="mt-3 text-slate-300">
-                  These are starter examples showing how a game page can look before live data and automation are added.
-                </p>
+            <section className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">Features</p>
+                <h3>Everything is structured for growth.</h3>
               </div>
-
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                  <p className="text-sm text-cyan-300">NBA sample page</p>
-                  <h4 className="mt-2 text-2xl font-semibold">Lakers vs Suns</h4>
-                  <p className="mt-4 text-sm text-slate-400">Prediction</p>
-                  <p className="mt-1 text-lg font-medium">Lakers win probability: 58%</p>
-                  <p className="mt-4 text-sm text-slate-400">Reasoning</p>
-                  <p className="mt-1 text-slate-300">
-                    Current form, matchup flow, and lineup strength suggest a slight edge. This section can later include injuries, team trends, and deeper notes.
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Regular Season</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Game Notes</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Prediction</span>
-                  </div>
-                </div>
-
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                  <p className="text-sm text-cyan-300">NFL sample page</p>
-                  <h4 className="mt-2 text-2xl font-semibold">Chiefs vs Bills</h4>
-                  <p className="mt-4 text-sm text-slate-400">Prediction</p>
-                  <p className="mt-1 text-lg font-medium">Chiefs win probability: 54%</p>
-                  <p className="mt-4 text-sm text-slate-400">Reasoning</p>
-                  <p className="mt-1 text-slate-300">
-                    Team form, pressure situations, and overall matchup balance point to a close game. This block can later grow into a full breakdown page.
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Playoffs</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Game Notes</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300">Prediction</span>
-                  </div>
-                </div>
+              <div className="three-col">
+                <StatCard label="Prediction Pages" value="Built in" subtext="Each sport can grow into real game breakdown pages and prediction posts." />
+                <StatCard label="Team Expansion" value="Ready" subtext="Every team is already listed so future pages can be connected later." />
+                <StatCard label="Future Automation" value="Planned" subtext="The layout is ready for live schedules, automatic matchups, and learning tools later." />
               </div>
             </section>
 
-            <section id="features" className="mx-auto max-w-6xl px-6 pb-16">
-              <div className="mb-8">
-                <h3 className="text-3xl font-semibold">What this site is built for</h3>
-                <p className="mt-3 text-slate-300">
-                  The foundation is simple now, but it is designed to support more pages, more sports, and more tools later.
-                </p>
-              </div>
-
-              <div className="grid gap-5 md:grid-cols-3">
-                <InfoCard title="Prediction pages" text="Create sections for game breakdowns, matchup notes, and future prediction tools." />
-                <InfoCard title="League expansion" text="Add new sports and leagues over time without needing a full redesign." />
-                <InfoCard title="Long-term growth" text="Use this as the starting point for a larger platform as your ideas become more clear." />
-              </div>
-            </section>
-
-            <section id="contact" className="bg-slate-900/70">
-              <div className="mx-auto max-w-6xl px-6 py-16">
-                <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
-                  <h3 className="text-3xl font-semibold">Contact</h3>
-                  <p className="mt-3 max-w-2xl text-slate-300">
-                    Use your email here so people can reach you directly as the platform grows.
+            <section id="contact" className="section contact-shell">
+              <div className="contact-panel">
+                <div className="section-copy">
+                  <p className="eyebrow">Contact</p>
+                  <h3>Stay connected as the platform grows.</h3>
+                  <p>
+                    Use the contact section to reach out directly while the site develops into a bigger sports platform.
                   </p>
-                  <div className="mt-6 grid gap-4 md:grid-cols-3">
-                    <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                      <p className="text-sm text-slate-400">Email</p>
-                      <p className="mt-1">kgeramy1@gmail.com</p>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                      <p className="text-sm text-slate-400">Facebook</p>
-                      <p className="mt-1">Add your Facebook link here</p>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                      <p className="text-sm text-slate-400">Website status</p>
-                      <p className="mt-1">Built to expand over time</p>
-                    </div>
-                  </div>
+                </div>
+                <div className="three-col">
+                  <StatCard label="Email" value="kgeramy1@gmail.com" subtext="Main contact for Near Perfect Predictions." />
+                  <StatCard label="Facebook" value="Add link" subtext="You can replace this with your real Facebook link later." />
+                  <StatCard label="Website Status" value="Live" subtext="The site is live and ready to keep improving from here." />
                 </div>
               </div>
             </section>
           </main>
 
-          <footer className="border-t border-white/10 px-6 py-6 text-center text-sm text-slate-400">
+          <footer className="footer">
             © 2026 NearPerfectPredictions.com
           </footer>
         </>
