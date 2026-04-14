@@ -73,7 +73,7 @@ const sportsData = {
       { teams: "New York Rangers vs Carolina Hurricanes", type: "Playoffs", note: "Goaltending edge, forecheck, and discipline." },
     ],
     liveGames: [
-      { teams: "Boston Bruins vs Toronto Maple Leafs", time: "7:00 PM", status: "Scheduled" },
+      { teams: "TEST GAME vs TEST GAME", time: "RIGHT NOW", status: "Live" },
       { teams: "Colorado Avalanche vs Dallas Stars", time: "Final", status: "Completed" },
       { teams: "Edmonton Oilers vs Vancouver Canucks", time: "2nd Period", status: "Live" },
       { teams: "New York Rangers vs Carolina Hurricanes", time: "Tomorrow", status: "Upcoming" },
