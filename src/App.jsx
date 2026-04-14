@@ -15,6 +15,12 @@ const sportsData = {
       { teams: "Phoenix Suns vs Dallas Mavericks", type: "Regular Season", note: "Scoring rhythm, defensive consistency, and rest." },
       { teams: "Miami Heat vs New York Knicks", type: "Playoffs", note: "Half-court matchup, depth, and late-game execution." },
     ],
+    liveGames: [
+      { teams: "TEST GAME vs TEST GAME", time: "RIGHT NOW", status: "Live" },
+      { teams: "Los Angeles Lakers vs Denver Nuggets", time: "10:00 PM", status: "Scheduled" },
+      { teams: "Phoenix Suns vs Dallas Mavericks", time: "Final", status: "Completed" },
+      { teams: "Miami Heat vs New York Knicks", time: "Halftime", status: "Live" },
+    ],
     teams: [
       "Atlanta Hawks", "Boston Celtics", "Brooklyn Nets", "Charlotte Hornets", "Chicago Bulls", "Cleveland Cavaliers",
       "Dallas Mavericks", "Denver Nuggets", "Detroit Pistons", "Golden State Warriors", "Houston Rockets", "Indiana Pacers",
@@ -36,6 +42,12 @@ const sportsData = {
       { teams: "Philadelphia Eagles vs Dallas Cowboys", type: "Regular Season", note: "Trench battle, pace control, and matchup leverage." },
       { teams: "Baltimore Ravens vs Cincinnati Bengals", type: "Regular Season", note: "Explosive play potential, defense, and discipline." },
       { teams: "San Francisco 49ers vs Detroit Lions", type: "Playoffs", note: "Scheme strength, balance, and late-game adjustment." },
+    ],
+    liveGames: [
+      { teams: "Kansas City Chiefs vs Buffalo Bills", time: "8:20 PM", status: "Scheduled" },
+      { teams: "Philadelphia Eagles vs Dallas Cowboys", time: "Final", status: "Completed" },
+      { teams: "Baltimore Ravens vs Cincinnati Bengals", time: "3rd Quarter", status: "Live" },
+      { teams: "San Francisco 49ers vs Detroit Lions", time: "Sunday", status: "Upcoming" },
     ],
     teams: [
       "Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens", "Buffalo Bills", "Carolina Panthers", "Chicago Bears",
@@ -60,6 +72,12 @@ const sportsData = {
       { teams: "Edmonton Oilers vs Vancouver Canucks", type: "Regular Season", note: "Top-end talent, form, and shot quality." },
       { teams: "New York Rangers vs Carolina Hurricanes", type: "Playoffs", note: "Goaltending edge, forecheck, and discipline." },
     ],
+    liveGames: [
+      { teams: "Boston Bruins vs Toronto Maple Leafs", time: "7:00 PM", status: "Scheduled" },
+      { teams: "Colorado Avalanche vs Dallas Stars", time: "Final", status: "Completed" },
+      { teams: "Edmonton Oilers vs Vancouver Canucks", time: "2nd Period", status: "Live" },
+      { teams: "New York Rangers vs Carolina Hurricanes", time: "Tomorrow", status: "Upcoming" },
+    ],
     teams: [
       "Anaheim Ducks", "Boston Bruins", "Buffalo Sabres", "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks",
       "Colorado Avalanche", "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers", "Florida Panthers",
@@ -82,6 +100,12 @@ const sportsData = {
       { teams: "Los Angeles Dodgers vs Atlanta Braves", type: "Playoffs", note: "Series leverage, bullpen usage, and power bats." },
       { teams: "Houston Astros vs Seattle Mariners", type: "Regular Season", note: "Pitching matchup, recent form, and run creation." },
       { teams: "Philadelphia Phillies vs San Diego Padres", type: "Playoffs", note: "Bullpen pressure, late innings, and lineup balance." },
+    ],
+    liveGames: [
+      { teams: "New York Yankees vs Boston Red Sox", time: "7:05 PM", status: "Scheduled" },
+      { teams: "Los Angeles Dodgers vs Atlanta Braves", time: "Final", status: "Completed" },
+      { teams: "Houston Astros vs Seattle Mariners", time: "Top 6th", status: "Live" },
+      { teams: "Philadelphia Phillies vs San Diego Padres", time: "Tomorrow", status: "Upcoming" },
     ],
     teams: [
       "Arizona Diamondbacks", "Athletics", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox", "Chicago Cubs",
@@ -111,6 +135,18 @@ function GameCard({ game }) {
         <span className="badge">{game.type}</span>
       </div>
       <p className="game-note">{game.note}</p>
+    </div>
+  );
+}
+
+function LiveGameCard({ game }) {
+  return (
+    <div className="game-card">
+      <div className="game-top">
+        <p className="game-title">{game.teams}</p>
+        <span className="badge">{game.status}</span>
+      </div>
+      <p className="game-note">Time / Update: {game.time}</p>
     </div>
   );
 }
@@ -179,7 +215,7 @@ export default function App() {
           <main>
             <section className="hero">
               <div>
-                <div className="cyan-pill">Live-ready sports platform</div>
+                <div className="cyan-pill">Phase 1 live games ready</div>
                 <h2>Smarter sports predictions with clean structure, pro design, and room to grow.</h2>
                 <p className="hero-text">
                   Near Perfect Predictions is designed to organize NBA, NFL, NHL, and MLB coverage
@@ -187,8 +223,8 @@ export default function App() {
                   future space for live matchups and learning tools.
                 </p>
                 <div className="button-row">
-                  <a href="#sports" className="btn-primary">Explore sport pages</a>
-                  <a href="#contact" className="btn-secondary">Contact</a>
+                  <a href="#live-games" className="btn-primary">View live games</a>
+                  <a href="#sports" className="btn-secondary">Explore sport pages</a>
                 </div>
               </div>
 
@@ -196,7 +232,7 @@ export default function App() {
                 <StatCard label="Sports" value="4" subtext="NBA, NFL, NHL, and MLB with room to expand later." />
                 <div className="two-col">
                   <StatCard label="Structure" value="Separate" subtext="Each sport gets its own clean page area." />
-                  <StatCard label="Game Layout" value="Evenly spaced" subtext="Game cards are balanced and separated for readability." />
+                  <StatCard label="Phase 1" value="Live Games" subtext="Section added now and ready for real API data later." />
                 </div>
               </div>
             </section>
@@ -205,6 +241,21 @@ export default function App() {
               <StatCard label="Contact" value="kgeramy1@gmail.com" subtext="Direct email contact for the platform." />
               <StatCard label="Mode Control" value="Public / Private" subtext="You can switch the site on or off visually from the top bar." />
               <StatCard label="Future Goal" value="Live games + learning" subtext="Designed to grow into automatic matchup tracking and deeper team analysis." />
+            </section>
+
+            <section id="live-games" className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">Phase 1 live games</p>
+                <h3>Automatic matchup section structure starts here.</h3>
+                <p>
+                  This section is the first step toward full automation. Right now it shows a clean live-games layout using starter data. Later, this exact area can connect to a real sports API and update automatically.
+                </p>
+              </div>
+              <div className="games-grid">
+                {currentSport.liveGames.map((game) => (
+                  <LiveGameCard key={`${selectedSport}-live-${game.teams}-${game.time}`} game={game} />
+                ))}
+              </div>
             </section>
 
             <section className="section container">
@@ -226,7 +277,7 @@ export default function App() {
                   <h3>One professional page structure for each sport.</h3>
                   <p>
                     Each sport has its own page area with regular season coverage, playoff coverage,
-                    evenly separated game cards, and full team lists.
+                    evenly separated game cards, full team lists, and now a live-games section.
                   </p>
                 </div>
                 <div className="sports-tab-wrap">
@@ -277,6 +328,72 @@ export default function App() {
                       <TeamChip key={`${selectedSport}-${team}`} team={team} />
                     ))}
                   </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">Daily picks</p>
+                <h3>Today’s featured picks section.</h3>
+                <p>
+                  This area is built for your current daily or weekly picks. You can swap these out anytime with real games and real notes.
+                </p>
+              </div>
+              <div className="games-grid">
+                <GameCard game={{ teams: "Boston Celtics vs Milwaukee Bucks", type: "Daily Pick", note: "Prediction: Celtics 60%. Stronger recent rhythm, cleaner defensive form, and better matchup flow." }} />
+                <GameCard game={{ teams: "Kansas City Chiefs vs Buffalo Bills", type: "Daily Pick", note: "Prediction: Chiefs 54%. Quarterback edge, big-game experience, and stronger late-game trust." }} />
+                <GameCard game={{ teams: "Colorado Avalanche vs Dallas Stars", type: "Daily Pick", note: "Prediction: Avalanche 52%. Slight edge through speed, pressure, and top-end scoring." }} />
+                <GameCard game={{ teams: "Los Angeles Dodgers vs Atlanta Braves", type: "Daily Pick", note: "Prediction: Dodgers 57%. Pitching edge and stronger top-of-lineup balance." }} />
+              </div>
+            </section>
+
+            <section className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">Real game pages</p>
+                <h3>Game breakdown pages you can build from.</h3>
+                <p>
+                  These sections give each sport a place for real matchup posts with prediction, reasoning, and notes.
+                </p>
+              </div>
+              <div className="three-col">
+                <StatCard label="NBA Game Page" value="Ready" subtext="Use this area for NBA game breakdowns, predictions, and notes." />
+                <StatCard label="NFL Game Page" value="Ready" subtext="Use this area for NFL matchup posts and weekly prediction pages." />
+                <StatCard label="NHL / MLB Pages" value="Ready" subtext="Use these areas for hockey and baseball game writeups as you add more content." />
+              </div>
+              <div className="sport-panel">
+                <div className="section-copy small">
+                  <h5>Example real post format</h5>
+                  <p>Use this layout each time you want to post a real game prediction on the site.</p>
+                </div>
+                <div className="games-grid">
+                  <GameCard game={{ teams: "Celtics vs Bucks", type: "NBA Breakdown", note: "Prediction: Celtics 60%. Reason: better recent form, stronger defensive control, and cleaner matchup structure." }} />
+                  <GameCard game={{ teams: "Chiefs vs Bills", type: "NFL Breakdown", note: "Prediction: Chiefs 54%. Reason: playoff composure, quarterback edge, and stronger situational trust." }} />
+                </div>
+              </div>
+            </section>
+
+            <section className="section container">
+              <div className="section-copy">
+                <p className="eyebrow">Prediction tracking</p>
+                <h3>Track wins, losses, and accuracy over time.</h3>
+                <p>
+                  This gives you a place to measure how your predictions are doing and helps the platform feel more real and trustworthy.
+                </p>
+              </div>
+              <div className="three-col">
+                <StatCard label="Total Picks" value="24" subtext="Total predictions posted so far." />
+                <StatCard label="Wins" value="15" subtext="Predictions that finished correctly." />
+                <StatCard label="Accuracy" value="62.5%" subtext="Sample tracking rate for current posted picks." />
+              </div>
+              <div className="sport-panel">
+                <div className="section-copy small">
+                  <h5>Tracking examples</h5>
+                  <p>As you update the site, replace these with your real prediction results.</p>
+                </div>
+                <div className="games-grid">
+                  <GameCard game={{ teams: "Celtics vs Bucks", type: "Result: Win", note: "Posted at 60%. Final result matched the prediction." }} />
+                  <GameCard game={{ teams: "Chiefs vs Bills", type: "Result: Loss", note: "Posted at 54%. Final result went the other way. Keep the post and track it honestly." }} />
                 </div>
               </div>
             </section>
